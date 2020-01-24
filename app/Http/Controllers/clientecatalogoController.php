@@ -120,17 +120,23 @@ class clientecatalogoController extends Controller
     }
 
     public function searchFilter(Request $request){
+
+        $producto = $request->productoselect;
+        $precioini = intval($request->rangoprecioini);
+        $preciofin = intval($request->rangopreciofin);
+        $calificacion = intval($request->calificacionselect);
+        $ciudad = $request->ciudadselect;
         $productoSeleccionado = DB::table('users')
             ->select(DB::raw('users.*'))
-            ->join('calificacion', 'users.idUser', '=','calificacion.idUser')
+            ->join('calificacion', 'users.idUser', '=', 'calificacion.idUser')
             ->join('portafolios', 'users.idUser', '=', 'portafolios.idUser')
-            ->join('categorias', 'portafolios.idCategoria', '=', 'categorias.idCategoria')
-            ->join('categoriaproductos', 'categoriaproductos.idCategoria', '=', 'categorias.idCategoria')
+            ->join('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
+            ->join('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
             ->join('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
-            ->where('productos.nombre', '=', $request->productoselect)
-            ->whereBetween('productos.precio', [$request->rangoprecioini, $request->rangopreciofin])
-            ->where('calificacion.calificacion', '=', $request->calificacionselect)
-            ->where('users.ciudad', '=', "'$request->ciudadselect'")
+            ->where('productos.nombre', '=', $producto)
+            ->whereBetween('productos.precio', [$precioini, $preciofin])
+            ->where('calificacion.calificacion', '=', $calificacion)
+            ->where('users.ciudad', '=', $ciudad)
             ->get();
 
         return json_encode($productoSeleccionado);

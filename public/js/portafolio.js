@@ -112,10 +112,10 @@ function deleteCategoria(idCategoria){
 
 function filtroproveedor(){
     var categoriaselect = $('#categoriaselect').val();
-    var calificacionselect = $('#calificacionselect').val();
+    var calificacionselect = $('#calificacionselect option:selected').text();
     var ciudadselect = $('#ciudadselect option:selected').text();
     var ciudadselect_ = $('#ciudadselect option:selected').val();
-    var productoselect = $('#productoselect').val();
+    var productoselect = $('#productoselect option:selected').text();
     var rangoprecioini = $('#rangoprecioini').val();
     var rangopreciofin = $('#rangopreciofin').val();
 
@@ -157,13 +157,60 @@ function filtroproveedor(){
         url: '/searchFilter',
         type: 'post',
         success: function(data){
-            console.log(data);
+            var data = JSON.parse(data);
+
+            $('#Modalfiltro').on('show.bs.modal', function(){
+                console.log(data);
+                for(i in data) {
+                    $('#cuerpoModalFiltro').html(
+                        '<div class="container">'+
+                        '<div class="row">'+
+                        '<div class="col-12">' +
+                        '<div>' +
+                        'Nombre del proveedor: ' +data[i].nombreEmpresa+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="row">'+
+                        '<div class="col-12">' +
+                        '<div>' +
+                        'Ciudad de origen: ' +data[i].ciudad+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="row">'+
+                        '<div class="col-12">' +
+                        '<div>' +
+                        'Direccion: ' +data[i].direccion+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="row">'+
+                        '<div class="col-12">' +
+                        '<div>' +
+                        'Teléfono: ' +data[i].telefono+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '<div class="row">'+
+                        '<div class="col-12">' +
+                        '<div>' +
+                        'Correo electrónico: ' +data[i].email+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '</div>'+
+                        '<hr>'
+                    );
+                }
+            });
+
             //location.href = window.location.origin + "clientecatalogo/";
-            alert("ok")
+            //alert("ok")
         },
         error: function (data) {
             console.log(data);
-            alert("Error");
+            //alert("Error");
             //console.log(data);
         }
     });
@@ -172,7 +219,7 @@ function filtroproveedor(){
 
     function enviarpedido(){
             var cantnodos = document.getElementById("carrito").childNodes.length;
-            var array_carrito   = $('#carrito')[0].innerHTML; 
+            var array_carrito   = $('#carrito')[0].innerHTML;
             //console.log(carrito);
             const listLi = [...carrito.childNodes];
             const datasetList = listLi.map( li => {
@@ -182,10 +229,10 @@ function filtroproveedor(){
             listLi.forEach( li => {
                 console.log(li.dataset);
             } );
-            //$('div#contenidopedido').html(array_carrito); 
+            //$('div#contenidopedido').html(array_carrito);
 
             ///var res = array_carrito.split("x",3);
-            document.write(datasetList); 
+            document.write(datasetList);
 
         }
 
