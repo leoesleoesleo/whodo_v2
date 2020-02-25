@@ -112,108 +112,98 @@ function deleteCategoria(idCategoria){
 
 function filtroproveedor(){
     var categoriaselect = $('#categoriaselect').val();
-    var calificacionselect = $('#calificacionselect option:selected').text();
-    var ciudadselect = $('#ciudadselect option:selected').text();
-    var ciudadselect_ = $('#ciudadselect option:selected').val();
-    var productoselect = $('#productoselect option:selected').text();
+    var calificacion = $('#calificacionselect').val();
+    var ciudad = $('#ciudadselect').val();
+    var producto = $('#productoselect').val();
+    var nombreCalificacion = $('#calificacionselect option:selected').text();
+    var nombreCiudad = $('#ciudadselect option:selected').text();
+    var nombreProducto = $('#productoselect option:selected').text();
     var rangoprecioini = $('#rangoprecioini').val();
     var rangopreciofin = $('#rangopreciofin').val();
+    var valid = 0;
 
+    if(calificacion == '-- Calificación --' && ciudad == '-- Ciudad --' && producto == '-- Producto --'){
+        valid += 1;
+    }
 
-    if (categoriaselect == '' || categoriaselect == '-- Categoria --'){
-        alert("El campo categoria es obligatorio para el filtro");
-        return;
-      }
-
-    if (calificacionselect == '' || calificacionselect == '-- Calificación --' ){
-        alert("El campo calificación es obligatorio para el filtro");
-        return;
-      }
-
-    if (ciudadselect_ == '' || ciudadselect_ == '-- Ciudad --'){
-        alert("El campo ciudad es obligatorio para el filtro");
-        return;
-      }
-
-    if (productoselect == '' || productoselect == '-- Producto --'){
-        alert("El campo producto es obligatorio para el filtro");
-        return;
-      }
-
-    var params = {
-        'categoriaselect': categoriaselect,
-        'calificacionselect':calificacionselect,
-        'ciudadselect':ciudadselect,
-        'productoselect':productoselect,
-        'rangoprecioini':rangoprecioini,
-        'rangopreciofin':rangopreciofin
-    };
-
-    $.ajax({
-        headers: {
-            'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
-        },
-        data: params,
-        url: '/searchFilter',
-        type: 'post',
-        success: function(data){
-            var data = JSON.parse(data);
-
-            $('#Modalfiltro').on('show.bs.modal', function(){
+    if(valid == 0){
+        var params = {
+            'categoriaselect': categoriaselect,
+            'calificacionselect':nombreCalificacion,
+            'ciudadselect':nombreCiudad,
+            'productoselect':nombreProducto,
+            'rangoprecioini':rangoprecioini,
+            'rangopreciofin':rangopreciofin
+        };
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+            },
+            data: params,
+            url: '/searchFilter',
+            type: 'post',
+            success: function(data){
                 console.log(data);
-                for(i in data) {
-                    $('#cuerpoModalFiltro').html(
-                        '<div class="container">'+
-                        '<div class="row">'+
-                        '<div class="col-12">' +
-                        '<div>' +
-                        'Nombre del proveedor: ' +data[i].nombreEmpresa+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '<div class="row">'+
-                        '<div class="col-12">' +
-                        '<div>' +
-                        'Ciudad de origen: ' +data[i].ciudad+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '<div class="row">'+
-                        '<div class="col-12">' +
-                        '<div>' +
-                        'Direccion: ' +data[i].direccion+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '<div class="row">'+
-                        '<div class="col-12">' +
-                        '<div>' +
-                        'Teléfono: ' +data[i].telefono+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '<div class="row">'+
-                        '<div class="col-12">' +
-                        '<div>' +
-                        'Correo electrónico: ' +data[i].email+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '</div>'+
-                        '<hr>'
-                    );
-                }
-            });
-
-            //location.href = window.location.origin + "clientecatalogo/";
-            //alert("ok")
-        },
-        error: function (data) {
-            console.log(data);
-            //alert("Error");
-            //console.log(data);
-        }
-    });
+                //var data = JSON.parse(data);
+                
+                $('#Modalfiltro').on('show.bs.modal', function(){
+                    console.log(data);
+                    for(i in data) {
+                        $('#cuerpoModalFiltro').html(
+                            '<div class="container">'+
+                            '<div class="row">'+
+                            '<div class="col-12">' +
+                            '<div>' +
+                            'Nombre del proveedor: ' +data[i].nombreEmpresa+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="row">'+
+                            '<div class="col-12">' +
+                            '<div>' +
+                            'Ciudad de origen: ' +data[i].ciudad+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="row">'+
+                            '<div class="col-12">' +
+                            '<div>' +
+                            'Direccion: ' +data[i].direccion+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="row">'+
+                            '<div class="col-12">' +
+                            '<div>' +
+                            'Teléfono: ' +data[i].telefono+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '<div class="row">'+
+                            '<div class="col-12">' +
+                            '<div>' +
+                            'Correo electrónico: ' +data[i].email+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '</div>'+
+                            '<hr>'
+                        );
+                    }
+                });
+    
+                //location.href = window.location.origin + "clientecatalogo/";
+                //alert("ok")
+            },
+            error: function (data) {
+                console.log(data);
+                //alert("Error");
+                //console.log(data);
+            }
+        });
+    }else{
+        alert('Debe elegir al menos una opción para la búsqueda');
+    }   
 }
 
 

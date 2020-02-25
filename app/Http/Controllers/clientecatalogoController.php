@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\sugerircategoria;
 use Illuminate\Http\Request;
 use App\User;
-use App\Portafolio;
-use App\Categoria;
-use App\producto;
+use App\Portafolios;
+use App\Categorias;
+use App\productos;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProductoImport;
 use Illuminate\Support\Facades\Auth;
@@ -21,12 +21,6 @@ class clientecatalogoController extends Controller
         $provDetails = User::where('esEmpresa', '=', 1)->get();
         $date = date("Y-m-d", strtotime("-2 months"));
 
-        $portafolioCategorias = DB::table('portafolios')
-            ->join('categorias', 'portafolios.idCategoria', '=', 'categorias.idCategoria')
-            ->select('portafolios.portafolio', 'categorias.nombreCategoria')
-            ->where('portafolios.idUser', '=', Auth::id())
-            ->get();
-
         $newDetailsProv = DB::table('users')
             ->where('esEmpresa', '=', 1)
             ->whereBetween('created_at', [$date, date("Y-m-d")])->get();
@@ -38,15 +32,15 @@ class clientecatalogoController extends Controller
 
         $userId = Auth::id();
         $info = User::where('idUser', '=', $userId)->get();
-        $categoria = Categoria::all();
+        $categoria = Categorias::all();
         $calificacion = DB::table('calificacion')->get();
         $ciudad = DB::table('users')
             ->select('ciudad', 'idUser')
             ->where('esEmpresa', '=', 1)
             ->distinct()
             ->get();
-        $productos = producto::all();
-        $portafolio = Portafolio::where('idUser', '=', $userId)->get();
+        $productos = productos::all();
+        $portafolio = Portafolios::where('idUser', '=', $userId)->get();
 
         return view ('cliente.clientecatalogo')
             ->with('cantProv', $cantProv)
@@ -55,7 +49,6 @@ class clientecatalogoController extends Controller
             ->with('newDetailsProv', $newDetailsProv)
             ->with('info', $info)
             ->with('categoria', $categoria)
-            ->with('portafolioCategoria', $portafolioCategorias)
             ->with('calificacion', $calificacion)
             ->with('ciudad', $ciudad)
             ->with('producto', $productos)
@@ -63,7 +56,7 @@ class clientecatalogoController extends Controller
     }
 
     public function createCatalogo(Request $request){
-        $portafolio = new Portafolio;
+        $portafolio = new Portafolios;
         $portafolio->portafolio = $request->nombreportafolio;
         $portafolio->activo = 1;
         $portafolio->idUser = Auth::id();
@@ -79,10 +72,10 @@ class clientecatalogoController extends Controller
         return $portafolioCategorias;
     }
 
-    public function cargarExcel(){
+    /*public function cargarExcel(){
         $request = request()->portafolio;
         Excel::import(new ProductoImport, request()->file('cargaMasivaP'));
-        $port = producto::where('nombrePortafolio', '=', $request)->get();
+        $port = productos::where('nombrePortafolio', '=', $request)->get();
         foreach($port as $productos){
             $idPortafolio = DB::table('portafolios')->where('portafolio', '=', $productos->nombrePortafolio)->get();
             DB::table('portafolioproductos')->insert([
@@ -99,7 +92,7 @@ class clientecatalogoController extends Controller
             ]);
         }
         return back();
-    }
+    }*/
 
     public function sugerirCategoria(Request $request){
         $sugerencia = new sugerircategoria;
@@ -108,7 +101,7 @@ class clientecatalogoController extends Controller
     }
 
     public function createCategoria(Request $request){
-        $categoria = new Categoria;
+        $categoria = new Categorias;
         $categoria->nombreCategoria = $request->nomCategoria;
         $categoria->activo = 1;
         $categoria->save();
@@ -120,12 +113,52 @@ class clientecatalogoController extends Controller
     }
 
     public function searchFilter(Request $request){
-
+        $calificacion = intval($request->calificacionselect);
         $producto = $request->productoselect;
+        $ciudad = $request->ciudadselect;
+
+        if($calificacion == "-- Calificación --" && $ciudad == "-- Ciudad --"){
+            $productoSeleccionado = DB::table('users')
+            ->select(DB::raw('users.*'))
+            ->leftJoin('calificacion', 'users.idUser', '=', 'calificacion.idUser')
+            ->leftJoin('portafolios', 'users.idUser', '=', 'portafolios.idUser')
+            ->leftJoin('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
+            ->leftJoin('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
+            ->leftJoin('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
+            ->where('productos.nombre', '=', $producto)
+            ->get();
+
+            return json_encode($productoSeleccionado);
+        }else if($calificacion == "-- Calificación --" && $producto == "-- Producto --"){
+            $productoSeleccionado = DB::table('users')
+            ->select(DB::raw('users.*'))
+            ->leftJoin('calificacion', 'users.idUser', '=', 'calificacion.idUser')
+            ->leftJoin('portafolios', 'users.idUser', '=', 'portafolios.idUser')
+            ->leftJoin('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
+            ->leftJoin('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
+            ->leftJoin('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
+            ->where('users.ciudad', '=', $ciudad)
+            ->get();
+
+            return json_encode($productoSeleccionado);
+        }else if($ciudad == "-- Ciudad --" && $producto == "-- Producto --"){
+            $productoSeleccionado = DB::table('users')
+            ->select(DB::raw('users.*'))
+            ->leftJoin('calificacion', 'users.idUser', '=', 'calificacion.idUser')
+            ->leftJoin('portafolios', 'users.idUser', '=', 'portafolios.idUser')
+            ->leftJoin('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
+            ->leftJoin('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
+            ->leftJoin('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
+            ->where('calificacion.calificacion', '=', $calificacion)
+            ->get();
+
+            return json_encode($productoSeleccionado);
+        }
+        /*return json_encode($producto);
         $precioini = intval($request->rangoprecioini);
         $preciofin = intval($request->rangopreciofin);
-        $calificacion = intval($request->calificacionselect);
-        $ciudad = $request->ciudadselect;
+        
+        
         $productoSeleccionado = DB::table('users')
             ->select(DB::raw('users.*'))
             ->join('calificacion', 'users.idUser', '=', 'calificacion.idUser')
@@ -139,7 +172,7 @@ class clientecatalogoController extends Controller
             ->where('users.ciudad', '=', $ciudad)
             ->get();
 
-        return json_encode($productoSeleccionado);
+        return json_encode($productoSeleccionado);*/
     }
 
     public function c_cargaproductos(){

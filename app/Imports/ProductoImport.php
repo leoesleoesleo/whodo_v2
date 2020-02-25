@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\producto;
+use App\productos;
 use Maatwebsite\Excel\Concerns\ToModel;
 
 class ProductoImport implements ToModel
@@ -14,7 +14,7 @@ class ProductoImport implements ToModel
     */
     public function model(array $row)
     {
-        return new producto([
+        return new productos([
             'nombre' => $row[0],
             'precio' => $row[1],
             'nombrePortafolio' => $row[2]

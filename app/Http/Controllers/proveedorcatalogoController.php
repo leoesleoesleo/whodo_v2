@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use App\sugerircategoria;
 use Illuminate\Http\Request;
 use App\User;
-use App\Portafolio;
-use App\Categoria;
-use App\producto;
+use App\Portafolios;
+use App\Categorias;
+use App\productos;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\ProductoImport;
 use Illuminate\Support\Facades\Auth;
@@ -38,9 +38,9 @@ class proveedorcatalogoController extends Controller
 
         $userId = Auth::id();
         $info = User::where('idUser', '=', $userId)->get();
-        $categoria = Categoria::all();
+        $categoria = Categorias::all();
 
-        $portafolio = Portafolio::where('idUser', '=', $userId)->get();
+        $portafolio = Portafolios::where('idUser', '=', $userId)->get();
 
     	return view ('proveedor.proveedorcatalogo')
             ->with('cantProv', $cantProv)
@@ -54,7 +54,7 @@ class proveedorcatalogoController extends Controller
     }
 
     public function createCatalogo(Request $request){
-        $portafolio = new Portafolio;
+        $portafolio = new Portafolios;
         $portafolio->portafolio = $request->nombreportafolio;
         $portafolio->activo = 1;
         $portafolio->idUser = Auth::id();
@@ -73,7 +73,7 @@ class proveedorcatalogoController extends Controller
     public function cargarExcel(){
         $request = request()->portafolio;
         Excel::import(new ProductoImport, request()->file('cargaMasivaP'));
-        $port = producto::where('nombrePortafolio', '=', $request)->get();
+        $port = productos::where('nombrePortafolio', '=', $request)->get();
         foreach($port as $productos){
             $idPortafolio = DB::table('portafolios')->where('portafolio', '=', $productos->nombrePortafolio)->get();
             DB::table('portafolioproductos')->insert([
@@ -99,7 +99,7 @@ class proveedorcatalogoController extends Controller
     }
 
     public function createCategoria(Request $request){
-        $categoria = new Categoria;
+        $categoria = new Categorias;
         $categoria->nombreCategoria = $request->nomCategoria;
         $categoria->activo = 1;
         $categoria->save();

@@ -336,16 +336,7 @@
                         </div>
                         -->
 
-                        <div class="form-group">
-                            <div class="input-group-prepend">
-                                <select required name="rol" class="custom-select mr-sm-2" id="categoriaselect">
-                                    <option> -- Categoria -- </option>
-                                    @foreach($categoria as $cat)
-                                        <option value="{{$cat->idCategoria}}">{{$cat->nombreCategoria}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
+                
                         <div class="form-group">
                             <div class="input-group-prepend">
                                 <select required name="rol" class="custom-select mr-sm-2" id="calificacionselect">
@@ -495,80 +486,6 @@
         </div>
     </div>
 
-    <!-- Modal nuevo portafolio -->
-    <div class="modal fade" id="Modalnuevoportafolio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Nuevo Portafolio</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <div class="table-responsive" style="padding: 10px;">
-
-                        <!-- checkbox
-                        <div class="custom-control custom-checkbox mb-3">
-                            <input id="cate1" type="checkbox" class="custom-control-input">
-                            <label for="cate1" class="custom-control-label">Categoria 1</label>
-                        </div>
-                        -->
-
-                        @foreach($info as $data)
-                            <h3>Proveedor: {{$data->nombreEmpresa}}</h3>
-                            <h3>Nit: {{$data->nit}}</h3>
-                        @endforeach
-                        <br>
-                        <input class="form-control" placeholder="Nombre Portafolio" id="nomPortafolio" type="text" name="name" value="" required="" autofocus="">
-                        <br>
-                        <div class="form-group">
-                            <div class="input-group-prepend">
-                                <select required name="rol" class="custom-select mr-sm-2" id="categoriaSelect">
-                                    <option selected>Categoria:</option>
-                                    @foreach($categoria as $cat)
-                                        <option value="{{$cat->idCategoria}}">{{$cat->nombreCategoria}}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                        <br>
-                        <button type="button" class="btn btn-success" onclick="createPortafolio()">Crear nuevo portafolio</button>
-                        <br>
-                        <div class="table-responsive" style="padding: 15px;">
-                            <table class="table align-items-center table-flush" id="tablePortafolio">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th scope="col">Portafolio</th>
-                                        <th scope="col">Categoria</th>
-                                        <th scope="col">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($portafolioCategoria as $itemsPortafolio)
-                                        <tr>
-                                            <td>{{$itemsPortafolio->portafolio}}</td>
-                                            <td>{{$itemsPortafolio->nombreCategoria}}</td>
-                                            <td><i class="fa fa-edit text-orange" data-toggle="tooltip" data-placement="top" title="Editar Portafolio"></i>
-                                            <i class="fa fa-trash-alt text-orange" data-toggle="tooltip" data-placement="top" title="Eliminar Portafolio"></i></td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Modal productos -->
     <div class="modal fade" id="Modalproductos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
@@ -620,7 +537,7 @@
         </div>
     </div>
 
-    <!-- modal filtro -->
+    <!-- modal filtro 
     <div class="modal fade" id="Modalfiltro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -638,7 +555,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 
 @endsection
