@@ -368,6 +368,8 @@
                             </div>
                         </div>
                         <h3>Rango de precio</h3>
+
+                        <!--
                         <h5>Desde: <span id="texrangoprecioini" style="color: red;"></span><span style="color: red;"> $</span></h5>
                         <div class="">
                           <span class="font-weight-bold indigo-text mr-2 mt-1">0 $</span>
@@ -388,7 +390,25 @@
                             <a href="#!" class="btn btn-sm btn-outline-primary" data-toggle="modal"
                                data-target="#Modalfiltro" onclick="filtroproveedor()">Filtrar</a>
                         </div>
+                        </div>
+                        -->
 
+                        <div class="form-group">
+                            <div class="input-group-prepend">
+                                <input id="texrangoprecioini" type="text" class="form-control" placeholder="Precio desde">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="input-group-prepend">
+                                <input id="texrangopreciofin" type="text" class="form-control" placeholder="Precio hasta">
+                            </div>
+                        </div>
+
+                        <div class="col text-right">
+                            <a href="#!" class="btn btn-sm btn-outline-primary" data-toggle="modal"
+                               data-target="#Modalfiltro" onclick="filtroproveedor()">Filtrar</a>
+                        </div>
                     </div>
                 </div>
             </div>

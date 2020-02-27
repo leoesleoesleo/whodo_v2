@@ -120,6 +120,8 @@ function filtroproveedor(){
     var nombreProducto = $('#productoselect option:selected').text();
     var rangoprecioini = $('#rangoprecioini').val();
     var rangopreciofin = $('#rangopreciofin').val();
+    var texrangoprecioini = $('#texrangoprecioini').val();
+    var texrangopreciofin = $('#texrangopreciofin').val(); 
     var valid = 0;
 
     if(calificacion == '-- Calificación --' && ciudad == '-- Ciudad --' && producto == '-- Producto --'){
@@ -133,8 +135,14 @@ function filtroproveedor(){
             'ciudadselect':nombreCiudad,
             'productoselect':nombreProducto,
             'rangoprecioini':rangoprecioini,
-            'rangopreciofin':rangopreciofin
+            'rangopreciofin':rangopreciofin,
+            'texrangoprecioini':texrangoprecioini,
+            'texrangopreciofin':texrangopreciofin
         };
+
+    if (texrangopreciofin < texrangoprecioini){
+        alert("Elija un rango de precio válido");
+    }    
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
