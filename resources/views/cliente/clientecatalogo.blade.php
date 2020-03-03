@@ -557,7 +557,7 @@
         </div>
     </div>
 
-    <!-- modal filtro 
+    <!-- modal filtro --> 
     <div class="modal fade" id="Modalfiltro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -569,13 +569,14 @@
                     </button>
                 </div>
                 <div class="modal-body" id="cuerpoModalFiltro">
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
-    </div>-->
+    </div>
 
 
 @endsection
