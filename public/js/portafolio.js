@@ -118,10 +118,8 @@ function filtroproveedor(){
     var nombreCalificacion = $('#calificacionselect option:selected').text();
     var nombreCiudad = $('#ciudadselect option:selected').text();
     var nombreProducto = $('#productoselect option:selected').text();
-    var rangoprecioini = $('#rangoprecioini').val();
-    var rangopreciofin = $('#rangopreciofin').val();
     var texrangoprecioini = $('#texrangoprecioini').val();
-    var texrangopreciofin = $('#texrangopreciofin').val(); 
+    var texrangopreciofin = $('#texrangopreciofin').val();
     var valid = 0;
 
     if(calificacion == '-- Calificación --' && ciudad == '-- Ciudad --' && producto == '-- Producto --'){
@@ -134,15 +132,14 @@ function filtroproveedor(){
             'calificacionselect':nombreCalificacion,
             'ciudadselect':nombreCiudad,
             'productoselect':nombreProducto,
-            'rangoprecioini':rangoprecioini,
-            'rangopreciofin':rangopreciofin,
             'texrangoprecioini':texrangoprecioini,
             'texrangopreciofin':texrangopreciofin
         };
 
     if (texrangopreciofin < texrangoprecioini){
         alert("Elija un rango de precio válido");
-    }    
+        //return;
+    }
         $.ajax({
             headers: {
                 'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
@@ -153,7 +150,7 @@ function filtroproveedor(){
             success: function(data){
                 console.log(data);
                 //var data = JSON.parse(data);
-                
+
                 $('#Modalfiltro').on('show.bs.modal', function(){
                     console.log(data);
                     for(i in data) {
@@ -199,7 +196,7 @@ function filtroproveedor(){
                         );
                     }
                 });
-    
+
                 //location.href = window.location.origin + "clientecatalogo/";
                 //alert("ok")
             },
@@ -211,7 +208,7 @@ function filtroproveedor(){
         });
     }else{
         alert('Debe elegir al menos una opción para la búsqueda');
-    }   
+    }
 }
 
 
@@ -233,7 +230,3 @@ function filtroproveedor(){
             document.write(datasetList);
 
         }
-
-
-
-

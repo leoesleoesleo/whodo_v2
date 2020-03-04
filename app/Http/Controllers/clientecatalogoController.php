@@ -116,8 +116,9 @@ class clientecatalogoController extends Controller
         $calificacion = intval($request->calificacionselect);
         $producto = $request->productoselect;
         $ciudad = $request->ciudadselect;
-
-        if($calificacion == "-- Calificación --" && $ciudad == "-- Ciudad --"){
+        $precioInicial = $request->texrangoprecioini;
+        $precioFinal = $request->texrangopreciofin;
+        if($calificacion == "-- Calificación --" && $ciudad == "-- Ciudad --"  && $precioInicial == null){
             $productoSeleccionado = DB::table('users')
             ->select(DB::raw('users.*'))
             ->leftJoin('calificacion', 'users.idUser', '=', 'calificacion.idUser')
@@ -129,7 +130,7 @@ class clientecatalogoController extends Controller
             ->get();
 
             return json_encode($productoSeleccionado);
-        }else if($calificacion == "-- Calificación --" && $producto == "-- Producto --"){
+        }else if($calificacion == "-- Calificación --" && $producto == "-- Producto --" && $precioInicial == null){
             $productoSeleccionado = DB::table('users')
             ->select(DB::raw('users.*'))
             ->leftJoin('calificacion', 'users.idUser', '=', 'calificacion.idUser')
@@ -141,7 +142,7 @@ class clientecatalogoController extends Controller
             ->get();
 
             return json_encode($productoSeleccionado);
-        }else if($ciudad == "-- Ciudad --" && $producto == "-- Producto --"){
+        }else if($ciudad == "-- Ciudad --" && $producto == "-- Producto --" && $precioInicial == null){
             $productoSeleccionado = DB::table('users')
             ->select(DB::raw('users.*'))
             ->leftJoin('calificacion', 'users.idUser', '=', 'calificacion.idUser')
@@ -153,26 +154,32 @@ class clientecatalogoController extends Controller
             ->get();
 
             return json_encode($productoSeleccionado);
+        }else if($ciudad == "-- Ciudad --" && $producto == "-- Producto --" && $calificacion == "-- Calificación --" && $precioInicial != null){
+          $productoSeleccionado = DB::table('users')
+              ->select(DB::raw('users.*'))
+              ->join('calificacion', 'users.idUser', '=', 'calificacion.idUser')
+              ->join('portafolios', 'users.idUser', '=', 'portafolios.idUser')
+              ->join('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
+              ->join('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
+              ->join('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
+              ->whereBetween('productos.precio', [$precioInicial, $precioFinal])
+              ->get();
+              return json_encode($productoSeleccionado);
+        }else{
+          $productoSeleccionado = DB::table('users')
+              ->select(DB::raw('users.*'))
+              ->join('calificacion', 'users.idUser', '=', 'calificacion.idUser')
+              ->join('portafolios', 'users.idUser', '=', 'portafolios.idUser')
+              ->join('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
+              ->join('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
+              ->join('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
+              ->where('productos.nombre', '=', $producto)
+              ->whereBetween('productos.precio', [$precioInicial, $precioFinal])
+              ->where('calificacion.calificacion', '=', $calificacion)
+              ->where('users.ciudad', '=', $ciudad)
+              ->get();
+              return json_encode($productoSeleccionado);
         }
-        /*return json_encode($producto);
-        $precioini = intval($request->rangoprecioini);
-        $preciofin = intval($request->rangopreciofin);
-        
-        
-        $productoSeleccionado = DB::table('users')
-            ->select(DB::raw('users.*'))
-            ->join('calificacion', 'users.idUser', '=', 'calificacion.idUser')
-            ->join('portafolios', 'users.idUser', '=', 'portafolios.idUser')
-            ->join('categorias', 'portafolios.idCategoria', '=','categorias.idCategoria')
-            ->join('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
-            ->join('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
-            ->where('productos.nombre', '=', $producto)
-            ->whereBetween('productos.precio', [$precioini, $preciofin])
-            ->where('calificacion.calificacion', '=', $calificacion)
-            ->where('users.ciudad', '=', $ciudad)
-            ->get();
-
-        return json_encode($productoSeleccionado);*/
     }
 
     public function c_cargaproductos(){
