@@ -35,7 +35,7 @@ class clientecatalogoController extends Controller
         $categoria = Categorias::all();
         $calificacion = DB::table('calificacion')->get();
         $ciudad = DB::table('users')
-            ->select('ciudad', 'idUser')
+            ->select('ciudad')
             ->where('esEmpresa', '=', 1)
             ->distinct()
             ->get();
@@ -127,6 +127,7 @@ class clientecatalogoController extends Controller
             ->leftJoin('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
             ->leftJoin('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
             ->where('productos.nombre', '=', $producto)
+            ->distinct()
             ->get();
 
             return json_encode($productoSeleccionado);
@@ -139,6 +140,7 @@ class clientecatalogoController extends Controller
             ->leftJoin('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
             ->leftJoin('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
             ->where('users.ciudad', '=', $ciudad)
+            ->distinct()
             ->get();
 
             return json_encode($productoSeleccionado);
@@ -151,6 +153,7 @@ class clientecatalogoController extends Controller
             ->leftJoin('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
             ->leftJoin('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
             ->where('calificacion.calificacion', '=', $calificacion)
+            ->distinct()
             ->get();
 
             return json_encode($productoSeleccionado);
@@ -163,6 +166,7 @@ class clientecatalogoController extends Controller
               ->join('categoriaproductos', 'categorias.idCategoria', '=', 'categoriaproductos.idCategoria')
               ->join('productos', 'categoriaproductos.idProducto', '=', 'productos.idProducto')
               ->whereBetween('productos.precio', [$precioInicial, $precioFinal])
+              ->distinct()
               ->get();
               return json_encode($productoSeleccionado);
         }else{
@@ -177,6 +181,7 @@ class clientecatalogoController extends Controller
               ->whereBetween('productos.precio', [$precioInicial, $precioFinal])
               ->where('calificacion.calificacion', '=', $calificacion)
               ->where('users.ciudad', '=', $ciudad)
+              ->distinct()
               ->get();
               return json_encode($productoSeleccionado);
         }

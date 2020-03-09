@@ -279,7 +279,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive" style="padding: 15px;">
+                    <div id="table_cont" lass="table-responsive" style="padding: 15px;">
                         <table class="table align-items-center table-flush" id="adminTable">
                             <thead class="thead-light">
                             <tr>
@@ -352,7 +352,7 @@
                                 <select required name="rol" class="custom-select mr-sm-2" id="ciudadselect">
                                     <option> -- Ciudad -- </option>
                                     @foreach($ciudad as $ciu)
-                                        <option value="{{$ciu->idUser}}">{{$ciu->ciudad}}</option>
+                                        <option>{{$ciu->ciudad}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -406,8 +406,9 @@
                         </div>
 
                         <div class="col text-right">
-                            <a href="#!" class="btn btn-sm btn-outline-primary" data-toggle="modal"
-                               data-target="#Modalfiltro" onclick="filtroproveedor()">Filtrar</a>
+                            <button data-toggle="modal"
+                               data-target="#Modalfiltro" class="btn btn-sm btn-outline-primary" type="submit" onclick="filtroproveedor()">Filtrar
+                           </button>
                         </div>
                     </div>
                 </div>

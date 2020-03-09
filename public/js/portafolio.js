@@ -138,7 +138,7 @@ function filtroproveedor(){
 
     if (texrangopreciofin < texrangoprecioini){
         alert("Elija un rango de precio válido");
-        //return;
+        return;
     }
         $.ajax({
             headers: {
@@ -148,46 +148,45 @@ function filtroproveedor(){
             url: '/searchFilter',
             type: 'post',
             success: function(data){
-                console.log(data);
-                //var data = JSON.parse(data);
-
+                //console.log(data,"primera vez");
+                //alert(data);                
                 $('#Modalfiltro').on('show.bs.modal', function(){
-                    console.log(data);
-                    for(i in data) {
-                        $('#cuerpoModalFiltro').html(
+                    var datas = JSON.parse(data);                
+                    for(i in datas) {                        
+                        $('#cuerpoModalFiltro').append(
                             '<div class="container">'+
                             '<div class="row">'+
                             '<div class="col-12">' +
                             '<div>' +
-                            'Nombre del proveedor: ' +data[i].nombreEmpresa+
+                            'Nombre del proveedor: ' +datas[i].nombreEmpresa+
                             '</div>'+
                             '</div>'+
                             '</div>'+
                             '<div class="row">'+
                             '<div class="col-12">' +
                             '<div>' +
-                            'Ciudad de origen: ' +data[i].ciudad+
+                            'Ciudad de origen: ' +datas[i].ciudad+
                             '</div>'+
                             '</div>'+
                             '</div>'+
                             '<div class="row">'+
                             '<div class="col-12">' +
                             '<div>' +
-                            'Direccion: ' +data[i].direccion+
+                            'Direccion: ' +datas[i].direccion+
                             '</div>'+
                             '</div>'+
                             '</div>'+
                             '<div class="row">'+
                             '<div class="col-12">' +
                             '<div>' +
-                            'Teléfono: ' +data[i].telefono+
+                            'Teléfono: ' +datas[i].telefono+
                             '</div>'+
                             '</div>'+
                             '</div>'+
                             '<div class="row">'+
                             '<div class="col-12">' +
                             '<div>' +
-                            'Correo electrónico: ' +data[i].email+
+                            'Correo electrónico: ' +datas[i].email+
                             '</div>'+
                             '</div>'+
                             '</div>'+
@@ -196,13 +195,13 @@ function filtroproveedor(){
                         );
                     }
                 });
+                
 
                 //location.href = window.location.origin + "clientecatalogo/";
-                //alert("ok")
             },
             error: function (data) {
                 console.log(data);
-                //alert("Error");
+                alert("Error");
                 //console.log(data);
             }
         });
