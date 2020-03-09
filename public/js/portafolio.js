@@ -149,10 +149,10 @@ function filtroproveedor(){
             type: 'post',
             success: function(data){
                 //console.log(data,"primera vez");
-                //alert(data);                
+                //alert(data);
                 $('#Modalfiltro').on('show.bs.modal', function(){
-                    var datas = JSON.parse(data);                
-                    for(i in datas) {                        
+                    var datas = JSON.parse(data);
+                    for(i in datas) {
                         $('#cuerpoModalFiltro').append(
                             '<div class="container">'+
                             '<div class="row">'+
@@ -195,7 +195,7 @@ function filtroproveedor(){
                         );
                     }
                 });
-                
+
 
                 //location.href = window.location.origin + "clientecatalogo/";
             },
@@ -211,21 +211,46 @@ function filtroproveedor(){
 }
 
 
-    function enviarpedido(){
-            var cantnodos = document.getElementById("carrito").childNodes.length;
-            var array_carrito   = $('#carrito')[0].innerHTML;
-            //console.log(carrito);
-            const listLi = [...carrito.childNodes];
-            const datasetList = listLi.map( li => {
-                return JSON.stringify(li.dataset);
-            } );
-            console.log(datasetList);
-            listLi.forEach( li => {
-                console.log(li.dataset);
-            } );
-            //$('div#contenidopedido').html(array_carrito);
+function enviarpedido () {
+  var array_carrito = $('#carrito')[0].innerHTML;
+  var idProveedor = $('#idProveedorH').val();
+  console.log(idProveedor);
+  //console.log(carrito);
+  //
+  const listLi = [...carrito.childNodes];
+  const datasetList = listLi.map( li => {
+    console.log(typeof li.dataset);
+    li.dataset.idProveedor = idProveedor;
+    return JSON.stringify(li.dataset);
+  });
+  //console.log(datasetList);
+  listLi.forEach( li => {
+      console.log(li.dataset);
+  });
+  console.log(datasetList);
+  //$('div#contenidopedido').html(array_carrito);
 
-            ///var res = array_carrito.split("x",3);
-            document.write(datasetList);
+  ///var res = array_carrito.split("x",3);
+}
 
-        }
+function getJsonInfo (idUser) {
+  console.log(idUser)
+  params = {
+    'user': idUser
+  }
+  $.ajax({
+    headers: {
+        'X-CSRF-TOKEN' : $('meta[name="csrf-token"]').attr('content')
+    },
+    data: params,
+    url: '/getJsonC',
+    type: 'post',
+    success: function(data){
+      console.log(data);
+        //location.href = window.location.origin + "/sugerenciacategoria";
+    },
+    error: function (data) {
+        console.log(data)
+    }
+  })
+}

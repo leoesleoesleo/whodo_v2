@@ -109,4 +109,16 @@ class proveedorcatalogoController extends Controller
     public function deleteCategoria(Request $request){
         sugerircategoria::destroy($request->idCategoria);
     }
+
+    public function getJsonC(Request $request){
+      $jsonCarrito = DB::table('portafolios')
+      ->select(DB::raw('users.idUser, portafolios.portafolio, productos.nombre, productos.referencia, productos.precio, productos.fechaVencimiento'))
+      ->leftJoin('portafolioproductos', 'portafolios.idPortafolio', '=', 'portafolioproductos.idPortafolio')
+      ->leftJoin('productos', 'portafolioproductos.idProducto', '=', 'productos.idProducto')
+      ->leftJoin('users', 'portafolios.idUser', '=', 'users.idUser')
+      ->where('users.esEmpresa', '=', 1)
+      ->where('users.idUser', '=', $request->user)
+      ->get();
+      return json_encode($jsonCarrito);
+    }
 }

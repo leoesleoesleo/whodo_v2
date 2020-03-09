@@ -47,6 +47,7 @@ Route::post('/cargaProductos', 'proveedorcatalogoController@cargarExcel')->name(
 Route::post('/sugerirCategoria', 'proveedorcatalogoController@sugerirCategoria')->name('sugerirCategoria');
 Route::post('/crearCategoria', 'proveedorcatalogoController@createCategoria')->name('crearCategoria');
 Route::post('/deleteCategoria', 'proveedorcatalogoController@deleteCategoria')->name('deleteCategoria');
+Route::post('/getJsonC', 'proveedorcatalogoController@getJsonC')->name('getJsonC');
 
 Route::get('/clientecatalogo', 'clientecatalogoController@index')->name('clientecatalogo');
 Route::post('/searchFilter', 'clientecatalogoController@searchFilter')->name('searchFilter');

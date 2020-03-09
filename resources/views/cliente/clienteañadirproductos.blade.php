@@ -21,8 +21,8 @@
                         </div>
                         <div class="col-sm-6 col-lg-6">
                             <div class="card-body">
-                                <a href="#!" class="btn btn-sm btn-outline-primary" data-toggle="modal"
-                                   data-target="#Modalcatalogo">Ver Portafolio</a>
+                                <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal"
+                                   data-target="#Modalcatalogo" >Ver Portafolio</button>
                             </div>
                             <span class="d-inline-block text-truncate" style="max-width: 300px;">
                               {{($detalle->descripcion)}}

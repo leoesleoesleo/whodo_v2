@@ -293,6 +293,7 @@
                                         <div class="row">
                                             <div class="col-sm-6 col-lg-6">
                                                 <div class="card-body">
+                                                    <input type="hidden" id="idProveedorH" value="{{$detalle->idUser}}">
                                                     <h2>{{($detalle->nombreEmpresa)}}</h2>
                                                     <h4>{{('Nit: ' .$detalle->nit)}}</h4>
                                                     <h4>{{('País: ' .$detalle->pais)}}</h4>
@@ -302,8 +303,8 @@
                                             </div>
                                             <div class="col-sm-6 col-lg-6">
                                                 <div class="card-body">
-                                                    <a href="#!" class="btn btn-sm btn-outline-primary" data-toggle="modal"
-                                                       data-target="#Modalcatalogo">Ver Portafolio</a>
+                                                    <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal"
+                                                       data-target="#Modalcatalogo" onclick="getJsonInfo('{{$detalle->idUser}}')">Ver Portafolio</button>
                                                 </div>
                                                 <span class="d-inline-block text-truncate" style="max-width: 300px;">
                                                   {{($detalle->descripcion)}}
@@ -336,7 +337,7 @@
                         </div>
                         -->
 
-                
+
                         <div class="form-group">
                             <div class="input-group-prepend">
                                 <select required name="rol" class="custom-select mr-sm-2" id="calificacionselect">
@@ -558,7 +559,7 @@
         </div>
     </div>
 
-    <!-- modal filtro --> 
+    <!-- modal filtro -->
     <div class="modal fade" id="Modalfiltro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
          aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -570,7 +571,7 @@
                     </button>
                 </div>
                 <div class="modal-body" id="cuerpoModalFiltro">
-                    
+
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
